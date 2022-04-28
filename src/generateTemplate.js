@@ -3,24 +3,23 @@ const Manager = require("../lib/Manager")
 const Intern = require("../lib/Intern")
 
 //Generates one card(btrap component) for each member
-const generateCards = array => {
-    const generateManager = manager => {
-        return `    
+const generateManager = manager => {
+    return `    
             <div class="card text-white bg-primary mb-3 p-2" style="max-width: 18rem;">
             <h5 class="card-title text-white text-center">${manager.getName()}</h5>
             <h6 class="card-subtitle mb-2 text-white text-center">${manager.getRole()}</h6>
             <div class="card-body bg-light text-dark text-center">
                     <ul class="list-group list-group-flush bg-white">
-                        <li class="list-group-item">${manager.getId()}</li>
-                        <li class="list-group-item"><a href="mailto:${manager.getEmail()}">Email</a></li>
-                        <li class="list-group-item">${manager.officeNumber}</li>
+                        <li class="list-group-item Id">${manager.getId()}</li>
+                        <li class="list-group-item email"><a href="mailto:${manager.getEmail()}">Email</a></li>
+                        <li class="list-group-item office">${manager.officeNumber}</li>
                     </ul>
                 </div>
             </div>
         `
-    }
-    const generateEngineer = engineer => {
-        return `    
+}
+const generateEngineer = engineer => {
+    return `    
             <div class="card text-white bg-primary mb-3 p-2" style="max-width: 18rem;">
             <h5 class="card-title">${engineer.getName()}</h5>
             <h6 class="card-subtitle mb-2 text-white text-center">${engineer.getRole()}</h6>
@@ -33,11 +32,11 @@ const generateCards = array => {
                 </div>
             </div>
         `
-    }
-    const generateIntern = intern => {
-        return
-        < div class="card text-white bg-primary mb-3 p-2" style="max-width: 18rem;" >
-            <h5 class="card-title">${intern.getName()}</h5>
+}
+const generateIntern = intern => {
+    return `
+        <div class="card text-white bg-primary mb-3 p-2" style="max-width: 18rem;">
+            < h5 class="card-title" > ${intern.getName()}</h5 >
             <h6 class="card-subtitle mb-2 text-white text-center">${intern.getRole()}</h6>
             <div class="card-body bg-light text-dark text-center">
                 <ul class="list-group list-group-flush bg-white">
@@ -47,12 +46,54 @@ const generateCards = array => {
                 </ul>
             </div>
         </div >
-
-    }
-    
+        `
 };
 
-const generateTemplate = function (array) {
+// push array to page 
+generateHTML = (data) => {
+
+    // array for cards 
+    pageArray = [];
+
+    for (let i = 0; i < data.length; i++) {
+        const employee = data[i];
+        console.log(employee);
+        const role = employee.getRole();
+
+
+        // call manager function
+        if (role === 'Manager') {
+            const managerCard = generateManager(employee);
+
+            pageArray.push(managerCard);
+        }
+
+        // call engineer function
+        if (role === 'Engineer') {
+            const engineerCard = generateEngineer(employee);
+
+            pageArray.push(engineerCard);
+        }
+
+        // call intern function 
+        if (role === 'Intern') {
+            const internCard = generateIntern(employee);
+
+            pageArray.push(internCard);
+        }
+
+    }
+
+
+    const employeeCards = pageArray.join('')
+
+    // return to generated page
+    const generateTeam = generateTemplate(employeeCards);
+    return generateTeam;
+
+}
+
+const generateTemplate = employeeCards => {
 
     return `
     < !DOCTYPE html >
@@ -65,15 +106,20 @@ const generateTemplate = function (array) {
                                 <title>Team Profile</title>
                             </head>
                             <body>
-                                <div class="container text-center p-4 bg-danger mb-3">
-                                    <h3>My Team</h3>
-                                </div>
-                                <div class="container d-flex justify-content-around">
-                                    ${generateCards(array)}
+                            <header>
+                            <nav id="navbar" class="bg-info">
+                                <h1 class="navbar mb-6 justify-content-center text-white" id="navbar-text">Team Profile  <i class="fa-solid fa-users"></i></h1>
+                            </nav>
+                        </header>
+                        <main>
+                            <div class="container">
+                                <div class="row justify-content-center" id="team-cards">
+                                    <!--Team Cards-->
+                                    ${employeeCards}
                                 </div>
                             </body>
                         </html>
                         `
 }
 
-module.exports = generateTemplate
+module.exports = generateHTML
