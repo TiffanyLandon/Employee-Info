@@ -17,8 +17,8 @@ To install this application you first need npm I then node index.js
 ## Usage
 To create a list of employees that list their name, emails, id's, and github. 
 
-![alt text](assets/images/screenshot1.png)
-![alt text](assets/images/screenshot2.png)
+<img src="./assets/images/screenshot1.png" alt="" />
+<img src="./assets/images/screenshot2.png" alt="" />
 
 ## Credits
 Tiffany Bryan
